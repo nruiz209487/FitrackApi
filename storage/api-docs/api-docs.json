@@ -1,0 +1,84 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Fitrack",
+        "description": "Documentación de la API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/exercises": {
+            "get": {
+                "tags": [
+                    "exercises"
+                ],
+                "summary": "Obtener lista de exercises",
+                "operationId": "be2d98c446d6fd5505b280c573831621",
+                "responses": {
+                    "200": {
+                        "description": "Lista de exercises"
+                    }
+                }
+            }
+        },
+        "/api/logs": {
+            "get": {
+                "tags": [
+                    "logs"
+                ],
+                "summary": "Obtener lista de log de ejercicios",
+                "operationId": "3b6a2d84493170fe975e6668170fa867",
+                "responses": {
+                    "200": {
+                        "description": "Lista de logs de ejercicios"
+                    }
+                }
+            }
+        },
+        "/api/notes": {
+            "get": {
+                "tags": [
+                    "notes"
+                ],
+                "summary": "Obtener lista de notas",
+                "operationId": "ba6f7986dc556197094787462eded49f",
+                "responses": {
+                    "200": {
+                        "description": "Lista de notes"
+                    }
+                }
+            }
+        },
+        "/api/routines": {
+            "get": {
+                "tags": [
+                    "routines"
+                ],
+                "summary": "Obtener lista de routines",
+                "operationId": "63795e947cd6bdb072016dd07dabe4ba",
+                "responses": {
+                    "200": {
+                        "description": "Lista de routines"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "exercises",
+            "description": "exercises"
+        },
+        {
+            "name": "logs",
+            "description": "logs"
+        },
+        {
+            "name": "notes",
+            "description": "notes"
+        },
+        {
+            "name": "routines",
+            "description": "routines"
+        }
+    ]
+}
