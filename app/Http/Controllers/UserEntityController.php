@@ -8,9 +8,32 @@ use OpenApi\Annotations as OA;
 use App\Http\Requests\InsertUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 
-
 class UserEntityController
 {
+    /**
+     * @OA\Get(
+     *     path="/users/{user_id}",
+     *     summary="Obtener token de acceso por ID de usuario",
+     *     tags={"User"},
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token generado exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="token", type="string", example="eyJ0eXAiOiJK...")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Usuario no encontrado"
+     *     )
+     * )
+     */
     public function getByUserId($user_id)
     {
         $user = User::where('id', $user_id)->first();
@@ -27,6 +50,40 @@ class UserEntityController
         ]);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/users",
+     *     summary="Registrar nuevo usuario",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email", "password"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="secret123"),
+     *             @OA\Property(property="name", type="string", example="Juan")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Usuario registrado exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Usuario registrado exitosamente"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user_id", type="integer", example=1),
+     *                 @OA\Property(property="email", type="string", example="user@example.com"),
+     *                 @OA\Property(property="name", type="string", example="Juan"),
+     *                 @OA\Property(property="token", type="string", example="eyJhbGciOi...")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error al registrar usuario"
+     *     )
+     * )
+     */
     public function register(InsertUserRequest $request)
     {
         try {
@@ -58,6 +115,30 @@ class UserEntityController
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/users",
+     *     summary="Actualizar información del usuario",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email", "password"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="newpass456"),
+     *             @OA\Property(property="name", type="string", example="Juan Actualizado")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Usuario registrado exitosamente"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error al registrar usuario"
+     *     )
+     * )
+     */
     public function updateRequest(UpdateUserRequest $request)
     {
         try {
@@ -89,6 +170,31 @@ class UserEntityController
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/users/{user_id}",
+     *     summary="Eliminar usuario por ID",
+     *     tags={"User"},
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuario eliminado exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Usuario eliminado exitosamente")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Usuario no encontrado"
+     *     )
+     * )
+     */
     public function delete($user_id)
     {
         $user = User::find($user_id);
