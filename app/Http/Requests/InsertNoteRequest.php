@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Requests;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 
-class NoteEntity extends Model
+class InsertNoteRequest extends FormRequest
 {
-    protected $table = 'note_entities';
+    public function authorize()
+    {
+        return true;
+    }
 
-    protected $fillable = [
-        'header',
-        'text',
-        'timestamp',
-        'user_id',
-        'routine_id',
-    ];
-
-    public $timestamps = false;
+    public function rules()
+    {
+        return [
+            'header'     => 'required|string|max:255',
+            'text'       => 'required|string',
+            'timestamp'  => 'required|date',
+            'user_id'    => 'required|integer|exists:users,id',
+            'routine_id' => 'required|integer|exists:routines,id',
+        ];
+    }
 }

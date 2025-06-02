@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Requests;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 
-class ExerciseLogEntity extends Model
+class InsertExerciseLogRequest extends FormRequest
 {
-    protected $table = 'exercise_log_table';
+    public function authorize()
+    {
+        return true;
+    }
 
-    protected $fillable = [
-        'exercise_id',
-        'date',
-        'weight',
-        'reps',
-        'user_id',
-    ];
-
-    public $timestamps = false;
+    public function rules()
+    {
+        return [
+            'exercise_id' => 'required|integer|exists:exercises,id',
+            'date'        => 'required|date',
+            'weight'      => 'required|numeric|min:0',
+            'reps'        => 'required|integer|min:1',
+            'user_id'     => 'required|integer|exists:users,id',
+        ];
+    }
 }

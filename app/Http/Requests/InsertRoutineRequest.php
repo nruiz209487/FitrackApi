@@ -1,21 +1,25 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Requests;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 
-class RoutineEntity extends Model
+class InsertRoutineRequest extends FormRequest
 {
-    // Use the correct table name as per your database
-    protected $table = 'routine_entities';
+    public function authorize()
+    {
+        return true;
+    }
 
-    protected $fillable = [
-        'name',
-        'description',
-        'imageUri',
-        'exerciseIds',
-        'user_id',
-    ];
-
-    public $timestamps = false;
+    public function rules()
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'imageUri' => 'nullable|string|max:255',
+            'exerciseIds' => 'required|array',
+            'exerciseIds.*' => 'integer|exists:exercises,id',
+            'user_id' => 'required|integer|exists:users,id',
+        ];
+    }
 }

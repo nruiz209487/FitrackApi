@@ -1,15 +1,15 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\ExerciseEntity;
+use App\Models\TargetLocationEntity;
 use OpenApi\Annotations as OA;
 
-class ExerciseEntityController
+class TargetLocationEntityController
 {
-
     public function getAll()
     {
-        $list = ExerciseEntity::all();
+        $list = TargetLocationEntity::all();
         return response()->json($list);
     }
 }

@@ -3,136 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Models\RoutineEntity;
-use Illuminate\Http\Request;
 use App\Http\Requests\InsertRoutineRequest;
 use OpenApi\Annotations as OA;
+use Illuminate\Http\JsonResponse;
 
-class RoutineEntityController extends Controller
+class RoutineEntityController
 {
-    /**
-     * @OA\Get(
-     *     path="/api/users/{user_id}/routines",
-     *     summary="Obtener lista de routines de un usuario",
-     *     tags={"routines"},
-     *     @OA\Parameter(
-     *         name="user_id",
-     *         in="path",
-     *         required=true,
-     *         description="ID del usuario",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Lista de routines",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/RoutineEntity"))
-     *     )
-     * )
-     */
-    public function getByUserId($user_id)
+
+    public function getByUserId(int $user_id): JsonResponse
     {
-        $routine = RoutineEntity::where('user_id', $user_id)->get();
-        return response()->json($routine);
+        $routines = RoutineEntity::where('user_id', $user_id)->get();
+        return response()->json($routines);
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/api/users/{user_id}/routines/{routine_id}",
-     *     summary="Eliminar una routine de un usuario",
-     *     tags={"routines"},
-     *     @OA\Parameter(
-     *         name="user_id",
-     *         in="path",
-     *         required=true,
-     *         description="ID del usuario",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="routine_id",
-     *         in="path",
-     *         required=true,
-     *         description="ID de la routine",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Routine eliminada exitosamente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Routine no encontrada",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     )
-     * )
-     */
-    public function deleteByUserId($user_id, $routine_id)
+    public function deleteByUserId(int $user_id, int $routine_id): JsonResponse
     {
-        $routine = RoutineEntity::where('user_id', $user_id)->where('id', $routine_id)->first();
+        $routine = RoutineEntity::where('user_id', $user_id)
+            ->where('id', $routine_id)
+            ->first();
 
-        if ($routine) {
-            $routine->delete();
-            return response()->json(['message' => 'Routine deleted successfully'], 200);
-        } else {
-            return response()->json(['message' => 'Routine not found'], 404);
+        if (!$routine) {
+            return response()->json(['message' => 'Routine no encontrada'], 404);
         }
+
+        $routine->delete();
+        return response()->json(['message' => 'Routine eliminada exitosamente'], 200);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/users/{user_id}/routines",
-     *     summary="Insertar una routine para un usuario",
-     *     tags={"routines"},
-     *     @OA\Parameter(
-     *         name="user_id",
-     *         in="path",
-     *         required=true,
-     *         description="ID del usuario",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"id"},
-     *             @OA\Property(property="id", type="integer", description="ID de la routine")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Routine insertada exitosamente",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string"),
-     *             @OA\Property(property="routine", ref="#/components/schemas/RoutineEntity")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Routine ya existe para ese usuario",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     )
-     * )
-     */
-    public function insertByUserId($user_id, InsertRoutineRequest $request)
+    public function insertByUserId(int $user_id, InsertRoutineRequest $request): JsonResponse
     {
         $routine_id = $request->input('id');
 
-        $routine = RoutineEntity::where('user_id', $user_id)
-                                ->where('id', $routine_id)
-                                ->first();
+        $existingRoutine = RoutineEntity::where('user_id', $user_id)
+            ->where('id', $routine_id)
+            ->first();
 
-        if ($routine) {
+        if ($existingRoutine) {
             return response()->json(['message' => 'Routine ya existe para ese usuario'], 200);
-        } else {
-            $newRoutine = RoutineEntity::create([
-                'user_id' => $user_id,
-                'id' => $routine_id, 
-            ]);
-            return response()->json(['message' => 'Routine insertada exitosamente', 'routine' => $newRoutine], 201);
         }
+
+        $newRoutine = RoutineEntity::create([
+            'user_id' => $user_id,
+            'id' => $routine_id,
+        ]);
+
+        return response()->json([
+            'message' => 'Routine insertada exitosamente',
+            'routine' => $newRoutine
+        ], 201);
     }
 }
