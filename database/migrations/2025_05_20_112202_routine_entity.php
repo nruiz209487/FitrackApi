@@ -14,7 +14,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('imageUri');
             $table->string('exerciseIds');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
             $table->timestamps(); 
         });
     }

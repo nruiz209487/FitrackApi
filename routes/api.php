@@ -26,18 +26,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/targetlocations', [TargetLocationEntityController::class, 'getAll']);
 
     // Exercise Log routes
-    Route::get('/logs/user/{user_id}', [ExerciseLogEntityController::class, 'getByUserId']);
-    Route::post('/logs/user/{user_id}/insert', [ExerciseLogEntityController::class, 'insertByUserId']);
-    Route::delete('/logs/user/{user_id}/exercise/{exercise_Id}', [ExerciseLogEntityController::class, 'deleteByUserId']);
+    Route::get('/exercise-log/{user_id}', [ExerciseLogEntityController::class, 'getByUserId']);
+    Route::post('/exercise-log/{user_id}', [ExerciseLogEntityController::class, 'insertByUserId']);
+    Route::delete('/exercise-log/{user_id}/{exercise_Id}', [ExerciseLogEntityController::class, 'deleteByUserId']);
 
     // Note routes
     Route::get('/notes/user/{user_id}', [NoteEntityController::class, 'getByUserId']);
-    Route::post('/logs/user/{user_id}/note', [NoteEntityController::class, 'insertByUserId']);
-    Route::delete('/logs/user/{user_id}/note/{id}', [NoteEntityController::class, 'deleteByUserId']);
+    Route::post('/notes/user/{user_id}', [NoteEntityController::class, 'insertByUserId']);
+    Route::delete('/notes/user/{user_id}/{id}', [NoteEntityController::class, 'deleteByUserId']);
 
     // Routine routes
-    Route::get('/routines/user/{user_id}', [RoutineEntityController::class, 'getByUserId']);
-    Route::get('/users/{user_id}/routines', [RoutineEntityController::class, 'getByUserId']);
-    Route::post('/users/{user_id}/routines', [RoutineEntityController::class, 'insertByUserId']);
-    Route::delete('/users/{user_id}/routines/{routine_id}', [RoutineEntityController::class, 'deleteByUserId']);
+    Route::get('/routines/{user_id}', [RoutineEntityController::class, 'getByUserId']);
+    Route::post('/routines/{user_id}', [RoutineEntityController::class, 'insertByUserId']);
+    Route::delete('/routines/{user_id}/{routine_id}', [RoutineEntityController::class, 'deleteByUserId']);
 });

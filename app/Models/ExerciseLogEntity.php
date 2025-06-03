@@ -13,7 +13,7 @@ class ExerciseLogEntity extends Model
         'date',
         'weight',
         'reps',
-        'user_id',
+        'userId',
     ];
 
     public $timestamps = false;

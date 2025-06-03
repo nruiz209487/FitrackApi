@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id(); // auto-incremental
             $table->string('header');
             $table->text('text');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
             $table->string('timestamp');
             
         });

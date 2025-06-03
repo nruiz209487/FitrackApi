@@ -6,82 +6,85 @@ use App\Models\NoteEntity;
 use OpenApi\Annotations as OA;
 use App\Http\Requests\InsertNoteRequest;
 
-class NoteEntityController 
+class NoteEntityController
 {
     /**
      * @OA\Get(
-     *     path="/notes/user/{user_id}",
-     *     summary="Get notes by user ID",
+     *     path="/api/notes/user/{user_id}",
+     *     summary="Obtener notas por ID de usuario",
      *     tags={"Notes"},
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",
      *         required=true,
-     *         description="ID of the user",
+     *         description="ID del usuario",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="List of notes"
+     *         description="Lista de notas"
      *     )
      * )
      */
     public function getByUserId($user_id)
     {
-        $note = NoteEntity::where('user_id', $user_id)->get();
-        return response()->json($note);
+        $notes = NoteEntity::where('userId', $user_id)->get();
+        return response()->json($notes);
     }
 
     /**
      * @OA\Delete(
-     *     path="/notes/user/{user_id}/{id}",
-     *     summary="Delete a note by user ID and note ID",
+     *     path="/api/notes/user/{user_id}/{id}",
+     *     summary="Eliminar una nota por ID de usuario e ID de nota",
      *     tags={"Notes"},
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",
      *         required=true,
-     *         description="ID of the user",
+     *         description="ID del usuario",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID of the note",
+     *         description="ID de la nota",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Note deleted successfully"
+     *         description="Nota eliminada exitosamente"
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Note not found"
+     *         description="Nota no encontrada"
      *     )
      * )
      */
     public function deleteByUserId($user_id, $id)
     {
-        $note = NoteEntity::where('user_id', $user_id)->where('id', $id)->first();
+        $note = NoteEntity::where('userId', $user_id)
+            ->where('id', $id)
+            ->first();
+
         if ($note) {
             $note->delete();
-            return response()->json(['message' => 'Note deleted successfully'], 200);
-        } else {
-            return response()->json(['message' => 'Note not found'], 404);
+            return response()->json(['message' => 'Nota eliminada exitosamente'], 200);
         }
+
+        return response()->json(['message' => 'Nota no encontrada'], 404);
     }
 
     /**
      * @OA\Post(
-     *     path="/notes/user/{user_id}",
-     *     summary="Insert a note by user ID",
+     *     path="/api/notes/user/{user_id}",
+     *     summary="Insertar una nueva nota por ID de usuario",
      *     tags={"Notes"},
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",
      *         required=true,
-     *         description="ID of the user",
+     *         description="ID del usuario",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
@@ -93,11 +96,11 @@ class NoteEntityController
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Note inserted successfully"
+     *         description="Nota insertada exitosamente"
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Note already exists for this user"
+     *         description="La nota ya existe para ese usuario"
      *     )
      * )
      */
@@ -105,18 +108,22 @@ class NoteEntityController
     {
         $note_id = $request->input('id');
 
-        $note = NoteEntity::where('user_id', $user_id)
-                          ->where('id', $note_id)
-                          ->first();
+        $existingNote = NoteEntity::where('userId', $user_id)
+            ->where('id', $note_id)
+            ->first();
 
-        if ($note) {
-            return response()->json(['message' => 'Note ya existe para ese usuario'], 200);
-        } else {
-            $newNote = NoteEntity::create([
-                'user_id' => $user_id,
-                'id' => $note_id, 
-            ]);
-            return response()->json(['message' => 'Note insertada exitosamente', 'note' => $newNote], 201);
+        if ($existingNote) {
+            return response()->json(['message' => 'La nota ya existe para ese usuario'], 200);
         }
+
+        $newNote = NoteEntity::create([
+            'userId' => $user_id,
+            'id'     => $note_id,
+        ]);
+
+        return response()->json([
+            'message' => 'Nota insertada exitosamente',
+            'note'    => $newNote
+        ], 201);
     }
 }

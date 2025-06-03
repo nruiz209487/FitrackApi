@@ -11,7 +11,7 @@ class RoutineEntityController
 {
     /**
      * @OA\Get(
-     *     path="/routine/{user_id}",
+     *     path="/api/routine/{user_id}",
      *     summary="Obtener las rutinas por ID de usuario",
      *     tags={"Routine"},
      *     operationId="getRoutinesByUserId",
@@ -30,13 +30,13 @@ class RoutineEntityController
      */
     public function getByUserId(int $user_id): JsonResponse
     {
-        $routines = RoutineEntity::where('user_id', $user_id)->get();
+        $routines = RoutineEntity::where('userId', $user_id)->get();
         return response()->json($routines);
     }
 
     /**
      * @OA\Delete(
-     *     path="/routine/{user_id}/{routine_id}",
+     *     path="/api/routine/{user_id}/{routine_id}",
      *     summary="Eliminar una rutina por ID de usuario e ID de rutina",
      *     tags={"Routine"},
      *     operationId="deleteRoutineByUserIdAndRoutineId",
@@ -66,7 +66,7 @@ class RoutineEntityController
      */
     public function deleteByUserId(int $user_id, int $routine_id): JsonResponse
     {
-        $routine = RoutineEntity::where('user_id', $user_id)
+        $routine = RoutineEntity::where('userId', $user_id)
             ->where('id', $routine_id)
             ->first();
 
@@ -80,7 +80,7 @@ class RoutineEntityController
 
     /**
      * @OA\Post(
-     *     path="/routine/{user_id}",
+     *     path="/api/routine/{user_id}",
      *     summary="Insertar una nueva rutina para un usuario",
      *     tags={"Routine"},
      *     operationId="insertRoutineByUserId",
@@ -116,7 +116,7 @@ class RoutineEntityController
     {
         $routine_id = $request->input('id');
 
-        $existingRoutine = RoutineEntity::where('user_id', $user_id)
+        $existingRoutine = RoutineEntity::where('userId', $user_id)
             ->where('id', $routine_id)
             ->first();
 
@@ -125,7 +125,7 @@ class RoutineEntityController
         }
 
         $newRoutine = RoutineEntity::create([
-            'user_id' => $user_id,
+            'userId' => $user_id,
             'id' => $routine_id,
         ]);
 

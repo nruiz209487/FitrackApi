@@ -12,7 +12,7 @@ class UserEntityController
 {
     /**
      * @OA\Get(
-     *     path="/users/{user_id}",
+     *     path="/api/users/{user_id}",
      *     summary="Obtener token de acceso por ID de usuario",
      *     tags={"User"},
      *     @OA\Parameter(
@@ -52,7 +52,7 @@ class UserEntityController
 
     /**
      * @OA\Post(
-     *     path="/users",
+     *     path="/api/users",
      *     summary="Registrar nuevo usuario",
      *     tags={"User"},
      *     @OA\RequestBody(
@@ -117,7 +117,7 @@ class UserEntityController
 
     /**
      * @OA\Put(
-     *     path="/users",
+     *     path="/api/users",
      *     summary="Actualizar información del usuario",
      *     tags={"User"},
      *     @OA\RequestBody(
@@ -172,7 +172,7 @@ class UserEntityController
 
     /**
      * @OA\Delete(
-     *     path="/users/{user_id}",
+     *     path="/api/users/{user_id}",
      *     summary="Eliminar usuario por ID",
      *     tags={"User"},
      *     @OA\Parameter(

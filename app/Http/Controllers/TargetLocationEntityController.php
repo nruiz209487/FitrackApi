@@ -9,7 +9,7 @@ class TargetLocationEntityController
 {
     /**
      * @OA\Get(
-     *     path="/target-locations",
+     *     path="/api/target-locations",
      *     summary="Obtener todas las ubicaciones objetivo",
      *     description="Devuelve una lista de todas las entidades de ubicación objetivo.",
      *     tags={"TargetLocation"},

@@ -20,7 +20,7 @@
                 }
             }
         },
-        "/exercise-log/{user_id}": {
+        "/api/exercise-log/{user_id}": {
             "get": {
                 "tags": [
                     "ExerciseLog"
@@ -88,7 +88,7 @@
                 }
             }
         },
-        "/exercise-log/{user_id}/{exercise_Id}": {
+        "/api/exercise-log/{user_id}/{exercise_Id}": {
             "delete": {
                 "tags": [
                     "ExerciseLog"
@@ -123,18 +123,18 @@
                 }
             }
         },
-        "/notes/user/{user_id}": {
+        "/api/notes/user/{user_id}": {
             "get": {
                 "tags": [
                     "Notes"
                 ],
-                "summary": "Get notes by user ID",
-                "operationId": "0bfd72ac15948965e59712aed9dbf976",
+                "summary": "Obtener notas por ID de usuario",
+                "operationId": "d37dd364f5cb201000d9fdb22d318348",
                 "parameters": [
                     {
                         "name": "user_id",
                         "in": "path",
-                        "description": "ID of the user",
+                        "description": "ID del usuario",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -143,7 +143,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of notes"
+                        "description": "Lista de notas"
                     }
                 }
             },
@@ -151,13 +151,13 @@
                 "tags": [
                     "Notes"
                 ],
-                "summary": "Insert a note by user ID",
-                "operationId": "c2e66cae229427b8896b0868d5b86115",
+                "summary": "Insertar una nueva nota por ID de usuario",
+                "operationId": "9dc076880331a0805734366bbc8660f4",
                 "parameters": [
                     {
                         "name": "user_id",
                         "in": "path",
-                        "description": "ID of the user",
+                        "description": "ID del usuario",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -185,26 +185,26 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Note inserted successfully"
+                        "description": "Nota insertada exitosamente"
                     },
                     "200": {
-                        "description": "Note already exists for this user"
+                        "description": "La nota ya existe para ese usuario"
                     }
                 }
             }
         },
-        "/notes/user/{user_id}/{id}": {
+        "/api/notes/user/{user_id}/{id}": {
             "delete": {
                 "tags": [
                     "Notes"
                 ],
-                "summary": "Delete a note by user ID and note ID",
-                "operationId": "af7467d40d00ac472fe58d1d324e2d3e",
+                "summary": "Eliminar una nota por ID de usuario e ID de nota",
+                "operationId": "9f97ffaa87b62acf64cf9665bf4899ab",
                 "parameters": [
                     {
                         "name": "user_id",
                         "in": "path",
-                        "description": "ID of the user",
+                        "description": "ID del usuario",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -213,7 +213,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the note",
+                        "description": "ID de la nota",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -222,15 +222,15 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Note deleted successfully"
+                        "description": "Nota eliminada exitosamente"
                     },
                     "404": {
-                        "description": "Note not found"
+                        "description": "Nota no encontrada"
                     }
                 }
             }
         },
-        "/routine/{user_id}": {
+        "/api/routine/{user_id}": {
             "get": {
                 "tags": [
                     "Routine"
@@ -316,7 +316,7 @@
                 }
             }
         },
-        "/routine/{user_id}/{routine_id}": {
+        "/api/routine/{user_id}/{routine_id}": {
             "delete": {
                 "tags": [
                     "Routine"
@@ -353,7 +353,7 @@
                 }
             }
         },
-        "/target-locations": {
+        "/api/target-locations": {
             "get": {
                 "tags": [
                     "TargetLocation"
@@ -392,13 +392,13 @@
                 }
             }
         },
-        "/users/{user_id}": {
+        "/api/users/{user_id}": {
             "get": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Obtener token de acceso por ID de usuario",
-                "operationId": "86ced095b67d72dfef88b5ba79e31b5d",
+                "operationId": "23df2e338e90ec50f602d1175d04814b",
                 "parameters": [
                     {
                         "name": "user_id",
@@ -436,7 +436,7 @@
                     "User"
                 ],
                 "summary": "Eliminar usuario por ID",
-                "operationId": "48f39d9a08a12bf8c4f585c898ee5829",
+                "operationId": "a01876c1fd380e7a1945e71ee7961d30",
                 "parameters": [
                     {
                         "name": "user_id",
@@ -474,13 +474,13 @@
                 }
             }
         },
-        "/users": {
+        "/api/users": {
             "put": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Actualizar información del usuario",
-                "operationId": "c80d697bb6dc40c0aea0b933f4138884",
+                "operationId": "dc490758250202455fa2569032722c05",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -525,7 +525,7 @@
                     "User"
                 ],
                 "summary": "Registrar nuevo usuario",
-                "operationId": "0350c7abefe7b3db62576b3b2e3086ae",
+                "operationId": "73b84fb1d5783f567b3d8de5205b4f84",
                 "requestBody": {
                     "required": true,
                     "content": {

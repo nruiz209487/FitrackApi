@@ -18,7 +18,7 @@ class InsertExerciseLogRequest extends FormRequest
             'date'        => 'required|date',
             'weight'      => 'required|numeric|min:0',
             'reps'        => 'required|integer|min:1',
-            'user_id'     => 'required|integer|exists:users,id',
+            'userId'     => 'required|integer|exists:users,id',
         ];
     }
 }

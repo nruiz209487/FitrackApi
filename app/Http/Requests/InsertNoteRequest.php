@@ -17,7 +17,7 @@ class InsertNoteRequest extends FormRequest
             'header'     => 'required|string|max:255',
             'text'       => 'required|string',
             'timestamp'  => 'required|date',
-            'user_id'    => 'required|integer|exists:users,id',
+            'userId'    => 'required|integer|exists:users,id',
             'routine_id' => 'required|integer|exists:routines,id',
         ];
     }

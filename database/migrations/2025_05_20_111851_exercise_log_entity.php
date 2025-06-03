@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('date');
             $table->float('weight');
             $table->integer('reps');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
         });
     }
 

@@ -10,7 +10,7 @@ class ExerciseLogEntityController
 {
     /**
      * @OA\Get(
-     *     path="/exercise-log/{user_id}",
+     *     path="/api/exercise-log/{user_id}",
      *     operationId="getExerciseLogsByUserId",
      *     summary="Obtener logs de ejercicio por ID de usuario",
      *     tags={"ExerciseLog"},
@@ -28,13 +28,13 @@ class ExerciseLogEntityController
      */
     public function getByUserId($user_id)
     {
-        $ExerciseLog = ExerciseLogEntity::where('user_id', $user_id)->get();
+        $ExerciseLog = ExerciseLogEntity::where('userId', $user_id)->get();
         return response()->json($ExerciseLog);
     }
 
     /**
      * @OA\Delete(
-     *     path="/exercise-log/{user_id}/{exercise_Id}",
+     *     path="/api/exercise-log/{user_id}/{exercise_Id}",
      *     operationId="deleteExerciseLogByUserIdAndExerciseId",
      *     summary="Eliminar un log de ejercicio por ID de usuario e ID de ejercicio",
      *     tags={"ExerciseLog"},
@@ -62,7 +62,7 @@ class ExerciseLogEntityController
      */
     public function deleteByUserId($user_id, $exercise_Id)
     {
-        $exerciseLog = ExerciseLogEntity::where('user_id', $user_id)->where('exerciseId', $exercise_Id)->first();
+        $exerciseLog = ExerciseLogEntity::where('userId', $user_id)->where('exerciseId', $exercise_Id)->first();
         if ($exerciseLog) {
             $exerciseLog->delete();
             return response()->json(['message' => 'Exercise Log deleted successfully'], 200);
@@ -73,7 +73,7 @@ class ExerciseLogEntityController
 
     /**
      * @OA\Post(
-     *     path="/exercise-log/{user_id}",
+     *     path="/api/exercise-log/{user_id}",
      *     operationId="insertExerciseLogByUserId",
      *     summary="Insertar un nuevo log de ejercicio para un usuario",
      *     tags={"ExerciseLog"},
@@ -104,7 +104,7 @@ class ExerciseLogEntityController
     {
         $exercise_log_id = $request->input('id');
 
-        $routine = ExerciseLogEntity::where('user_id', $user_id)
+        $routine = ExerciseLogEntity::where('userId', $user_id)
             ->where('id', $exercise_log_id)
             ->first();
 
@@ -112,7 +112,7 @@ class ExerciseLogEntityController
             return response()->json(['message' => 'Routine ya existe para ese usuario'], 200);
         } else {
             $newRoutine = ExerciseLogEntity::create([
-                'user_id' => $user_id,
+                'userId' => $user_id,
                 'id' => $exercise_log_id,
             ]);
             return response()->json(['message' => 'Routine insertada exitosamente', 'routine' => $newRoutine], 201);

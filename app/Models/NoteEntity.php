@@ -12,7 +12,7 @@ class NoteEntity extends Model
         'header',
         'text',
         'timestamp',
-        'user_id',
+        'userId',
     ];
 
     public $timestamps = false;

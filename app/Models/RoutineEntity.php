@@ -13,7 +13,7 @@ class RoutineEntity extends Model
         'description',
         'imageUri',
         'exerciseIds',
-        'user_id',
+        'userId',
     ];
 
     public $timestamps = false;
