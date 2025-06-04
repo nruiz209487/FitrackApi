@@ -10,11 +10,14 @@ use App\Http\Requests\UpdateUserRequest;
 
 class UserEntityController
 {
+    
     /**
+     * 
      * @OA\Get(
-     *     path="/api/users/{user_id}",
+     *     path="/api/user/{user_id}",
      *     summary="Obtener token de acceso por ID de usuario",
      *     tags={"User"},
+     *  
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",
@@ -52,16 +55,18 @@ class UserEntityController
 
     /**
      * @OA\Post(
-     *     path="/api/users",
+     *     path="/api/user/register",
      *     summary="Registrar nuevo usuario",
      *     tags={"User"},
+     *    
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"email", "password"},
-     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="secret123"),
-     *             @OA\Property(property="name", type="string", example="Juan")
+    *             required={"email", "password", "password_confirmation"},
+    *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+    *             @OA\Property(property="password", type="string", format="password", example="secret123"),
+    *             @OA\Property(property="password_confirmation", type="string", format="password", example="secret123"),
+    *             @OA\Property(property="name", type="string", example="Juan")
      *         )
      *     ),
      *     @OA\Response(
@@ -117,9 +122,10 @@ class UserEntityController
 
     /**
      * @OA\Put(
-     *     path="/api/users",
+     *     path="/api/user/update",
      *     summary="Actualizar información del usuario",
      *     tags={"User"},
+     *   security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -172,9 +178,10 @@ class UserEntityController
 
     /**
      * @OA\Delete(
-     *     path="/api/users/{user_id}",
+     *     path="/api/users/delete/{user_id}",
      *     summary="Eliminar usuario por ID",
      *     tags={"User"},
+     *   security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",

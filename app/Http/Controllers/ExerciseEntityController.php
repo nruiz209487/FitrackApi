@@ -11,6 +11,7 @@ class ExerciseEntityController
      *     path="/api/exercises",
      *     summary="Obtener lista de exercises",
      *     tags={"exercises"},
+     *   security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de exercises"

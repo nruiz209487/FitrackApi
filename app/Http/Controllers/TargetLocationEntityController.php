@@ -14,6 +14,7 @@ class TargetLocationEntityController
      *     description="Devuelve una lista de todas las entidades de ubicación objetivo.",
      *     tags={"TargetLocation"},
      *     operationId="getAllTargetLocations",
+     *   security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de ubicaciones objetivo",

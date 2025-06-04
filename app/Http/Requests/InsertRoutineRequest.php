@@ -18,8 +18,6 @@ class InsertRoutineRequest extends FormRequest
             'description' => 'nullable|string',
             'imageUri' => 'nullable|string|max:255',
             'exerciseIds' => 'required|array',
-            'exerciseIds.*' => 'integer|exists:exercises,id',
-            'userId' => 'required|integer|exists:users,id',
         ];
     }
 }

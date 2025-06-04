@@ -10,7 +10,6 @@ class InsertExerciseLogRequest extends FormRequest
     {
         return true;
     }
-
     public function rules()
     {
         return [
@@ -18,7 +17,5 @@ class InsertExerciseLogRequest extends FormRequest
             'date'        => 'required|date',
             'weight'      => 'required|numeric|min:0',
             'reps'        => 'required|integer|min:1',
-            'userId'     => 'required|integer|exists:users,id',
         ];
-    }
-}
+    }}

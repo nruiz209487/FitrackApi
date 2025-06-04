@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\NoteEntity;
 use OpenApi\Annotations as OA;
 use App\Http\Requests\InsertNoteRequest;
+use Illuminate\Http\JsonResponse;
 
 class NoteEntityController
 {
     /**
      * @OA\Get(
-     *     path="/api/notes/user/{user_id}",
+     *     path="/api/notes/{user_id}",
      *     summary="Obtener notas por ID de usuario",
      *     tags={"Notes"},
+     *     operationId="getNotesByUserId",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",
@@ -22,11 +25,21 @@ class NoteEntityController
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Lista de notas"
+     *         description="Lista de notas del usuario",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="userId", type="integer", example=123),
+     *                 @OA\Property(property="header", type="string", example="Nota importante"),
+     *                 @OA\Property(property="text", type="string", example="Este es el texto de la nota"),
+     *                 @OA\Property(property="timestamp", type="string", format="date-time", example="2025-06-04T14:30:00")
+     *             )
+     *         )
      *     )
      * )
      */
-    public function getByUserId($user_id)
+    public function getByUserId(int $user_id): JsonResponse
     {
         $notes = NoteEntity::where('userId', $user_id)->get();
         return response()->json($notes);
@@ -34,9 +47,11 @@ class NoteEntityController
 
     /**
      * @OA\Delete(
-     *     path="/api/notes/user/{user_id}/{id}",
+     *     path="/api/notes/{user_id}/{id}",
      *     summary="Eliminar una nota por ID de usuario e ID de nota",
      *     tags={"Notes"},
+     *     operationId="deleteNoteByUserIdAndId",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",
@@ -53,15 +68,21 @@ class NoteEntityController
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Nota eliminada exitosamente"
+     *         description="Nota eliminada exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Nota eliminada exitosamente")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Nota no encontrada"
+     *         description="Nota no encontrada",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Nota no encontrada")
+     *         )
      *     )
      * )
      */
-    public function deleteByUserId($user_id, $id)
+    public function deleteByUserId(int $user_id, int $id): JsonResponse
     {
         $note = NoteEntity::where('userId', $user_id)
             ->where('id', $id)
@@ -77,9 +98,11 @@ class NoteEntityController
 
     /**
      * @OA\Post(
-     *     path="/api/notes/user/{user_id}",
+     *     path="/api/note/{user_id}",
      *     summary="Insertar una nueva nota por ID de usuario",
      *     tags={"Notes"},
+     *     operationId="insertNoteByUserId",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",
@@ -90,26 +113,35 @@ class NoteEntityController
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"id"},
-     *             @OA\Property(property="id", type="integer", example=1)
+     *             required={"header", "text", "timestamp"},
+     *             @OA\Property(property="header", type="string", example="Reunión con el equipo"),
+     *             @OA\Property(property="text", type="string", example="Discutimos el progreso del proyecto y se asignaron nuevas tareas."),
+     *             @OA\Property(property="timestamp", type="string", format="date-time", example="2025-06-04T14:30:00")
      *         )
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Nota insertada exitosamente"
+     *         description="Nota insertada exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Nota insertada exitosamente"),
+     *             @OA\Property(property="note", type="object")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="La nota ya existe para ese usuario"
+     *         description="La nota ya existe para ese usuario",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="La nota ya existe para ese usuario")
+     *         )
      *     )
      * )
      */
-    public function insertByUserId($user_id, InsertNoteRequest $request)
+    public function insertByUserId(int $user_id, InsertNoteRequest $request): JsonResponse
     {
-        $note_id = $request->input('id');
-
+        // Buscar si ya existe una nota con los mismos datos
         $existingNote = NoteEntity::where('userId', $user_id)
-            ->where('id', $note_id)
+            ->where('header', $request->input('header'))
+            ->where('timestamp', $request->input('timestamp'))
             ->first();
 
         if ($existingNote) {
@@ -117,8 +149,10 @@ class NoteEntityController
         }
 
         $newNote = NoteEntity::create([
-            'userId' => $user_id,
-            'id'     => $note_id,
+            'userId'     => $user_id,
+            'header'     => $request->input('header'),
+            'text'       => $request->input('text'),
+            'timestamp'  => $request->input('timestamp'),
         ]);
 
         return response()->json([

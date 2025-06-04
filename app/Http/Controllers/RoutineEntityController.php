@@ -11,10 +11,11 @@ class RoutineEntityController
 {
     /**
      * @OA\Get(
-     *     path="/api/routine/{user_id}",
+     *     path="/api/routines/{user_id}",
      *     summary="Obtener las rutinas por ID de usuario",
      *     tags={"Routine"},
      *     operationId="getRoutinesByUserId",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",
@@ -36,10 +37,11 @@ class RoutineEntityController
 
     /**
      * @OA\Delete(
-     *     path="/api/routine/{user_id}/{routine_id}",
+     *     path="/api/routines/{user_id}/{routine_id}",
      *     summary="Eliminar una rutina por ID de usuario e ID de rutina",
      *     tags={"Routine"},
      *     operationId="deleteRoutineByUserIdAndRoutineId",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",
@@ -80,10 +82,11 @@ class RoutineEntityController
 
     /**
      * @OA\Post(
-     *     path="/api/routine/{user_id}",
+     *     path="/api/routines/{user_id}",
      *     summary="Insertar una nueva rutina para un usuario",
      *     tags={"Routine"},
      *     operationId="insertRoutineByUserId",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="user_id",
      *         in="path",
@@ -94,8 +97,16 @@ class RoutineEntityController
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"id"},
-     *             @OA\Property(property="id", type="integer", example=1)
+     *             required={"name", "description", "imageUri", "exerciseIds"},
+     *             @OA\Property(property="name", type="string", example="Rutina de pierna"),
+     *             @OA\Property(property="description", type="string", example="Ejercicios centrados en piernas y glúteos"),
+     *             @OA\Property(property="imageUri", type="string", example="https://miapp.com/images/pierna.png"),
+     *             @OA\Property(
+     *                 property="exerciseIds", 
+     *                 type="array",
+     *                 @OA\Items(type="integer"),
+     *                 example={101, 102, 103}
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -114,19 +125,24 @@ class RoutineEntityController
      */
     public function insertByUserId(int $user_id, InsertRoutineRequest $request): JsonResponse
     {
-        $routine_id = $request->input('id');
-
+        // Buscar si ya existe una rutina con el mismo nombre para el usuario
         $existingRoutine = RoutineEntity::where('userId', $user_id)
-            ->where('id', $routine_id)
+            ->where('name', $request->input('name'))
             ->first();
 
         if ($existingRoutine) {
             return response()->json(['message' => 'Routine ya existe para ese usuario'], 200);
         }
 
+        // Convertir array de exerciseIds a string JSON para guardarlo
+        $exerciseIdsJson = json_encode($request->input('exerciseIds'));
+
         $newRoutine = RoutineEntity::create([
-            'userId' => $user_id,
-            'id' => $routine_id,
+            'userId'      => $user_id,
+            'name'        => $request->input('name'),
+            'description' => $request->input('description') ?? '',
+            'imageUri'    => $request->input('imageUri') ?? '',
+            'exerciseIds' => $exerciseIdsJson,
         ]);
 
         return response()->json([

@@ -17,7 +17,12 @@
                     "200": {
                         "description": "Lista de exercises"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/exercise-log/{user_id}": {
@@ -31,6 +36,7 @@
                     {
                         "name": "user_id",
                         "in": "path",
+                        "description": "ID del usuario",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -39,9 +45,52 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lista de logs del usuario"
+                        "description": "Lista de logs de ejercicio del usuario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "userId": {
+                                                "type": "integer",
+                                                "example": 123
+                                            },
+                                            "exerciseId": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "date": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "2024-06-01"
+                                            },
+                                            "weight": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 50.5
+                                            },
+                                            "reps": {
+                                                "type": "integer",
+                                                "example": 10
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -53,6 +102,7 @@
                     {
                         "name": "user_id",
                         "in": "path",
+                        "description": "ID del usuario",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -65,12 +115,29 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "id"
+                                    "exercise_id",
+                                    "date",
+                                    "weight",
+                                    "reps"
                                 ],
                                 "properties": {
-                                    "id": {
+                                    "exercise_id": {
                                         "type": "integer",
                                         "example": 1
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-06-04"
+                                    },
+                                    "weight": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 75
+                                    },
+                                    "reps": {
+                                        "type": "integer",
+                                        "example": 12
                                     }
                                 },
                                 "type": "object"
@@ -80,12 +147,84 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Log insertado exitosamente"
+                        "description": "Log insertado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Exercise Log insertado exitosamente"
+                                        },
+                                        "exercise_log": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "200": {
-                        "description": "El log ya existe para ese usuario"
+                        "description": "El log ya existe para ese usuario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Exercise Log ya existe para ese usuario"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error interno"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/exercise-log/{user_id}/{exercise_Id}": {
@@ -99,6 +238,7 @@
                     {
                         "name": "user_id",
                         "in": "path",
+                        "description": "ID del usuario",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -107,6 +247,7 @@
                     {
                         "name": "exercise_Id",
                         "in": "path",
+                        "description": "ID del ejercicio",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -115,21 +256,52 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Log eliminado exitosamente"
+                        "description": "Log eliminado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Exercise Log deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Log no encontrado"
+                        "description": "Log no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Exercise Log not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/notes/user/{user_id}": {
+        "/api/notes/{user_id}": {
             "get": {
                 "tags": [
                     "Notes"
                 ],
                 "summary": "Obtener notas por ID de usuario",
-                "operationId": "d37dd364f5cb201000d9fdb22d318348",
+                "operationId": "getNotesByUserId",
                 "parameters": [
                     {
                         "name": "user_id",
@@ -143,63 +315,56 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lista de notas"
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Notes"
-                ],
-                "summary": "Insertar una nueva nota por ID de usuario",
-                "operationId": "9dc076880331a0805734366bbc8660f4",
-                "parameters": [
-                    {
-                        "name": "user_id",
-                        "in": "path",
-                        "description": "ID del usuario",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "id"
-                                ],
-                                "properties": {
-                                    "id": {
-                                        "type": "integer",
-                                        "example": 1
+                        "description": "Lista de notas del usuario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "userId": {
+                                                "type": "integer",
+                                                "example": 123
+                                            },
+                                            "header": {
+                                                "type": "string",
+                                                "example": "Nota importante"
+                                            },
+                                            "text": {
+                                                "type": "string",
+                                                "example": "Este es el texto de la nota"
+                                            },
+                                            "timestamp": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2025-06-04T14:30:00"
+                                            }
+                                        },
+                                        "type": "object"
                                     }
-                                },
-                                "type": "object"
+                                }
                             }
                         }
                     }
                 },
-                "responses": {
-                    "201": {
-                        "description": "Nota insertada exitosamente"
-                    },
-                    "200": {
-                        "description": "La nota ya existe para ese usuario"
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                }
+                ]
             }
         },
-        "/api/notes/user/{user_id}/{id}": {
+        "/api/notes/{user_id}/{id}": {
             "delete": {
                 "tags": [
                     "Notes"
                 ],
                 "summary": "Eliminar una nota por ID de usuario e ID de nota",
-                "operationId": "9f97ffaa87b62acf64cf9665bf4899ab",
+                "operationId": "deleteNoteByUserIdAndId",
                 "parameters": [
                     {
                         "name": "user_id",
@@ -222,15 +387,138 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Nota eliminada exitosamente"
+                        "description": "Nota eliminada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Nota eliminada exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Nota no encontrada"
+                        "description": "Nota no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Nota no encontrada"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/routine/{user_id}": {
+        "/api/note/{user_id}": {
+            "post": {
+                "tags": [
+                    "Notes"
+                ],
+                "summary": "Insertar una nueva nota por ID de usuario",
+                "operationId": "insertNoteByUserId",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "header",
+                                    "text",
+                                    "timestamp"
+                                ],
+                                "properties": {
+                                    "header": {
+                                        "type": "string",
+                                        "example": "Reunión con el equipo"
+                                    },
+                                    "text": {
+                                        "type": "string",
+                                        "example": "Discutimos el progreso del proyecto y se asignaron nuevas tareas."
+                                    },
+                                    "timestamp": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-06-04T14:30:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Nota insertada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Nota insertada exitosamente"
+                                        },
+                                        "note": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "La nota ya existe para ese usuario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "La nota ya existe para ese usuario"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/routines/{user_id}": {
             "get": {
                 "tags": [
                     "Routine"
@@ -252,7 +540,12 @@
                     "200": {
                         "description": "Lista de rutinas del usuario"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -277,12 +570,34 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "id"
+                                    "name",
+                                    "description",
+                                    "imageUri",
+                                    "exerciseIds"
                                 ],
                                 "properties": {
-                                    "id": {
-                                        "type": "integer",
-                                        "example": 1
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Rutina de pierna"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Ejercicios centrados en piernas y glúteos"
+                                    },
+                                    "imageUri": {
+                                        "type": "string",
+                                        "example": "https://miapp.com/images/pierna.png"
+                                    },
+                                    "exerciseIds": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            101,
+                                            102,
+                                            103
+                                        ]
                                     }
                                 },
                                 "type": "object"
@@ -313,10 +628,15 @@
                     "200": {
                         "description": "La rutina ya existe para ese usuario"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/routine/{user_id}/{routine_id}": {
+        "/api/routines/{user_id}/{routine_id}": {
             "delete": {
                 "tags": [
                     "Routine"
@@ -350,7 +670,12 @@
                     "404": {
                         "description": "Rutina no encontrada"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/target-locations": {
@@ -389,16 +714,21 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/users/{user_id}": {
+        "/api/user/{user_id}": {
             "get": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Obtener token de acceso por ID de usuario",
-                "operationId": "23df2e338e90ec50f602d1175d04814b",
+                "operationId": "8fd4118b8ff2e962773a1193670f73ae",
                 "parameters": [
                     {
                         "name": "user_id",
@@ -430,57 +760,15 @@
                         "description": "Usuario no encontrado"
                     }
                 }
-            },
-            "delete": {
-                "tags": [
-                    "User"
-                ],
-                "summary": "Eliminar usuario por ID",
-                "operationId": "a01876c1fd380e7a1945e71ee7961d30",
-                "parameters": [
-                    {
-                        "name": "user_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Usuario eliminado exitosamente",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Usuario eliminado exitosamente"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Usuario no encontrado"
-                    }
-                }
             }
         },
-        "/api/users": {
-            "put": {
+        "/api/user/register": {
+            "post": {
                 "tags": [
                     "User"
                 ],
-                "summary": "Actualizar información del usuario",
-                "operationId": "dc490758250202455fa2569032722c05",
+                "summary": "Registrar nuevo usuario",
+                "operationId": "473f479ae310c39510df8cad0fd8b20e",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -488,7 +776,8 @@
                             "schema": {
                                 "required": [
                                     "email",
-                                    "password"
+                                    "password",
+                                    "password_confirmation"
                                 ],
                                 "properties": {
                                     "email": {
@@ -499,49 +788,9 @@
                                     "password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "newpass456"
+                                        "example": "secret123"
                                     },
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Juan Actualizado"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Usuario registrado exitosamente"
-                    },
-                    "500": {
-                        "description": "Error al registrar usuario"
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "User"
-                ],
-                "summary": "Registrar nuevo usuario",
-                "operationId": "73b84fb1d5783f567b3d8de5205b4f84",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "user@example.com"
-                                    },
-                                    "password": {
+                                    "password_confirmation": {
                                         "type": "string",
                                         "format": "password",
                                         "example": "secret123"
@@ -603,6 +852,107 @@
                     }
                 }
             }
+        },
+        "/api/user/update": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Actualizar información del usuario",
+                "operationId": "d5a9618694f4fcee145546740504bb63",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpass456"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Juan Actualizado"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario registrado exitosamente"
+                    },
+                    "500": {
+                        "description": "Error al registrar usuario"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/delete/{user_id}": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Eliminar usuario por ID",
+                "operationId": "b17f8a65a3b3b3542ffae6252ff3ebe1",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuario eliminado exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario eliminado exitosamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "tags": [
@@ -630,5 +980,17 @@
             "name": "User",
             "description": "User"
         }
-    ]
+    ],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Ingrese el token en formato Bearer {token}",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
 }
