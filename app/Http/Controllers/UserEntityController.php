@@ -10,19 +10,19 @@ use App\Http\Requests\UpdateUserRequest;
 
 class UserEntityController
 {
-    
+
     /**
      * 
      * @OA\Get(
-     *     path="/api/user/{user_id}",
+     *     path="/api/user/{email}",
      *     summary="Obtener token de acceso por ID de usuario",
      *     tags={"User"},
      *  
      *     @OA\Parameter(
-     *         name="user_id",
+     *         name="email",
      *         in="path",
      *         required=true,
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="string")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -37,9 +37,9 @@ class UserEntityController
      *     )
      * )
      */
-    public function getByUserId($user_id)
+    public function getByEmail($email)
     {
-        $user = User::where('id', $user_id)->first();
+        $user = User::where('email', $email)->first();
 
         if (!$user) {
             return response()->json([
@@ -50,6 +50,13 @@ class UserEntityController
 
         return response()->json([
             'token' => $user->createToken('api-token')->plainTextToken,
+            'user' => [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'name' => $user->name,
+                'streak_days' => $user->streak_days,
+                'profile_image' => $user->profile_image,
+            ]
         ]);
     }
 

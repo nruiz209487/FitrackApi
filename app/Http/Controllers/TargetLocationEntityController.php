@@ -32,7 +32,16 @@ class TargetLocationEntityController
      */
     public function getAll()
     {
-        $list = TargetLocationEntity::all();
+        $list = TargetLocationEntity::all()->map(function ($item) {
+            [$lat, $lng] = explode(',', $item->position);
+            $item->position = [
+                'latitude' => (float) $lat,
+                'longitude' => (float) $lng,
+            ];
+
+            return $item;
+        });
+
         return response()->json($list);
     }
 }
