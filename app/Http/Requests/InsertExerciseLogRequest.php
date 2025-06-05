@@ -13,7 +13,7 @@ class InsertExerciseLogRequest extends FormRequest
     public function rules()
     {
         return [
-            'exercise_id' => 'required|integer|exists:exercises,id',
+            'exerciseId' => 'required|integer|exists:exercises,id',
             'date'        => 'required|date',
             'weight'      => 'required|numeric|min:0',
             'reps'        => 'required|integer|min:1',

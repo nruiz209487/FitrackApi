@@ -168,7 +168,7 @@ class ExerciseLogEntityController
 
             // Validación manual básica (sin exists check)
             $rules = [
-                'exercise_id' => 'required|integer',
+                'exerciseId' => 'required|integer',
                 'date'        => 'required|date',
                 'weight'      => 'required|numeric|min:0',
                 'reps'        => 'required|integer|min:1',
@@ -185,7 +185,7 @@ class ExerciseLogEntityController
 
             // Buscar si ya existe
             $existingLog = ExerciseLogEntity::where('userId', $user_id)
-                ->where('exerciseId', $request->input('exercise_id'))
+                ->where('exerciseId', $request->input('exerciseId'))
                 ->where('date', $request->input('date'))
                 ->first();
 
@@ -196,7 +196,7 @@ class ExerciseLogEntityController
             // Crear nuevo log
             $newLog = ExerciseLogEntity::create([
                 'userId'     => $user_id,
-                'exerciseId' => $request->input('exercise_id'),
+                'exerciseId' => $request->input('exerciseId'),
                 'date'       => $request->input('date'),
                 'weight'     => $request->input('weight'),
                 'reps'       => $request->input('reps'),

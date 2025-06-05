@@ -44,4 +44,59 @@ class TargetLocationEntityController
 
         return response()->json($list);
     }
+public function insertByUserId(int $user_id, Request $request): JsonResponse
+{
+    try {
+        // Reglas de validación
+        $rules = [
+            'name' => 'required|string',
+            'position' => 'required|string', // formato: "lat,lng"
+            'radiusMeters' => 'required|numeric|min:0',
+        ];
+
+        // Validar el request
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => 'Validación fallida',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Crear nueva ubicación
+        $newLocation = TargetLocationEntity::create([
+            'name' => $request->input('name'),
+            'position' => $request->input('position'),
+            'radiusMeters' => $request->input('radiusMeters'),
+        ]);
+
+        return response()->json([
+            'message' => 'Ubicación insertada exitosamente',
+            'location' => $newLocation
+        ], 201);
+
+    } catch (\Exception $e) {
+        // Log del error detallado
+        \Log::error('Error al insertar ubicación', [
+            'user_id' => $user_id,
+            'input' => $request->all(),
+            'exception_class' => get_class($e),
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString()
+        ]);
+
+        // Respuesta clara en JSON
+        return response()->json([
+            'error' => 'Error interno al insertar ubicación',
+            'exception' => get_class($e),
+            'message' => $e->getMessage(),
+            'hint' => 'Revisa storage/logs/laravel.log para más detalles'
+        ], 500);
+    }
+}
+
+
 }

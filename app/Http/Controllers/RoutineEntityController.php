@@ -134,15 +134,13 @@ class RoutineEntityController
             return response()->json(['message' => 'Routine ya existe para ese usuario'], 200);
         }
 
-        // Convertir array de exerciseIds a string JSON para guardarlo
-        $exerciseIdsJson = json_encode($request->input('exerciseIds'));
 
         $newRoutine = RoutineEntity::create([
             'userId'      => $user_id,
             'name'        => $request->input('name'),
             'description' => $request->input('description') ?? '',
             'imageUri'    => $request->input('imageUri') ?? '',
-            'exerciseIds' => $exerciseIdsJson,
+            'exerciseIds' => $request->input('exerciseIds') ?? '',
         ]);
 
         return response()->json([
