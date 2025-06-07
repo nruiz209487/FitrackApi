@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('password');
             $table->integer('streak_days')->nullable();
             $table->string('profile_image')->nullable();
+            $table->string('gender')->nullable();
+            $table->decimal('height', 5, 2)->nullable(); // Ejemplo: 175.50 cm
+            $table->decimal('weight', 5, 2)->nullable(); // Ejemplo: 75.50 kg
+            $table->date('last_streak_day')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

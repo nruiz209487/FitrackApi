@@ -96,37 +96,42 @@ class UserEntityController
      *     )
      * )
      */
-    public function register(InsertUserRequest $request)
-    {
-        try {
-            $user = User::create([
-                'name' => $request->name ?? 'Usuario',
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'streak_days' => 0,
-                'profile_image' => null,
-                'email_verified_at' => null
-            ]);
+public function register(InsertUserRequest $request)
+{
+    try {
+        $user = User::create([
+            'name' => $request->name ?? 'Usuario',
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'streak_days' => 1,
+            'profile_image' => null,
+            'email_verified_at' => null,
+            'gender' => $request->gender,
+            'height' => $request->height,
+            'weight' => $request->weight
+        ]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Usuario registrado exitosamente',
-                'data' => [
-                    'user_id' => $user->id,
-                    'email' => $user->email,
-                    'name' => $user->name,
-                    'token' => $user->createToken('api-token')->plainTextToken,
-                ]
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al registrar usuario',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuario registrado exitosamente',
+            'data' => [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'name' => $user->name,
+                'gender' => $user->gender,
+                'height' => $user->height,
+                'weight' => $user->weight,
+                'token' => $user->createToken('api-token')->plainTextToken,
+            ]
+        ], 201);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al registrar usuario',
+            'error' => $e->getMessage()
+        ], 500);
     }
-
+}
     /**
      * @OA\Put(
      *     path="/api/user/update",

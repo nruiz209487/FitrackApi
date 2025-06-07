@@ -23,7 +23,8 @@ Route::get('/notes/{user_id}', [NoteEntityController::class, 'getByUserId']);
 Route::delete('/notes/{user_id}/{id}', [NoteEntityController::class, 'deleteByUserId']);
 Route::get('/routines/{user_id}', [RoutineEntityController::class, 'getByUserId']);
 Route::delete('/routines/{user_id}/{routine_id}', [RoutineEntityController::class, 'deleteByUserId']);
-Route::middleware('auth:sanctum')->group(function () {
 Route::get('/target-locations/{user_id}/{id}', [TargetLocationEntityController::class, 'deleteByUserId']);
 Route::post('/target-locations/{user_id}', [TargetLocationEntityController::class, 'insertByUserId']);
+Route::middleware('auth:sanctum')->group(function () {
+
 });

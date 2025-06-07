@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('position');
             $table->float('radiusMeters');
+            $table->foreignId('userId')->constrained('users')->onDelete('cascade');
+            $table->timestamps(); 
         });
     }
 
