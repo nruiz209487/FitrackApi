@@ -13,14 +13,15 @@ class UpdateUserRequest extends FormRequest
 
     public function rules()
     {
-        $userId = $this->user()?->id;
 
+        
         return [
-            'name'          => 'required|string|max:255',
-            'email'         => 'required|string|email|max:255|unique:users,email,' . $userId,
-            'password'      => 'required|string|min:8|confirmed',
-            'streak_days'   => 'nullable|integer|min:0',
-            'profile_image' => 'nullable|string|max:255',
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|max:255',
+            'gender' => 'sometimes|in:Hombre,Mujer,Otro',
+            'height' => 'sometimes|numeric|min:0|max:3',
+            'weight' => 'sometimes|numeric|min:0|max:500',
         ];
     }
+
 }

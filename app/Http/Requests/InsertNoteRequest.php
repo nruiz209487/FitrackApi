@@ -16,9 +16,15 @@ class InsertNoteRequest extends FormRequest
     public function rules()
     {
         return [
-            'header'     => 'required|string|max:255',
-            'text'       => 'required|string',
-            'timestamp'  => 'required|date',
+            'id' => 'required|integer',
+            'header' => 'required|string',
+            'text' => 'required|string',
+            'userId' => 'required|integer',
+            'timestamp' => [
+                'required',
+                'string',
+                'regex:/^(NOTIFICATION:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}|(\d{4}-\d{2}-\d{2}))$/'
+            ],
         ];
     }
 }

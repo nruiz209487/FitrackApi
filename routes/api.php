@@ -11,11 +11,10 @@ use App\Http\Controllers\TargetLocationEntityController;
 // UserEntityController
 Route::post('/user/register', [UserEntityController::class, 'register']);
 Route::get('/user/{email}', [UserEntityController::class, 'getByEmail']);
-
+    Route::put('/user/update/{id}', [UserEntityController::class, 'updateRequest']);
 Route::middleware('auth:sanctum')->group(function () {
 
     // UserEntityController
-    Route::put('/user/update/{id}', [UserEntityController::class, 'updateRequest']);
     Route::delete('/user/delete/{id}', [UserEntityController::class, 'delete']);
 
     // ExerciseEntityController

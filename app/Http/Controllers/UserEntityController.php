@@ -132,61 +132,98 @@ public function register(InsertUserRequest $request)
         ], 500);
     }
 }
-    /**
-     * @OA\Put(
-     *     path="/api/user/update",
-     *     summary="Actualizar información del usuario",
-     *     tags={"User"},
-     *   security={{"bearerAuth":{}}},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"email", "password"},
-     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="newpass456"),
-     *             @OA\Property(property="name", type="string", example="Juan Actualizado")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Usuario registrado exitosamente"
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Error al registrar usuario"
-     *     )
-     * )
-     */
-    public function updateRequest(UpdateUserRequest $request)
-    {
-        try {
-            $user = User::create([
-                'name' => $request->name ?? 'Usuario',
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'streak_days' => 0,
-                'profile_image' => null,
-                'email_verified_at' => null
-            ]);
+/**
+ * @OA\Put(
+ *     path="/api/user/update/{id}",
+ *     summary="Actualizar información del usuario",
+ *     tags={"User"},
+ *     security={{"bearerAuth":{}}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"email", "password"},
+ *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+ *             @OA\Property(property="password", type="string", format="password", example="newpass456"),
+ *             @OA\Property(property="name", type="string", example="Juan Actualizado"),
+ *             @OA\Property(property="gender", type="string", example="male"),
+ *             @OA\Property(property="height", type="number", format="float", example=1.75),
+ *             @OA\Property(property="weight", type="number", format="float", example=70.5),
+ *             @OA\Property(property="streak_days", type="integer", example=15),
+ *             @OA\Property(property="profile_image", type="string", example="https://example.com/images/profile-juan.jpg")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Usuario actualizado exitosamente"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Usuario no encontrado"
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error al actualizar usuario"
+ *     )
+ * )
+ */
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Usuario registrado exitosamente',
-                'data' => [
-                    'user_id' => $user->id,
-                    'email' => $user->email,
-                    'name' => $user->name,
-                    'token' => $user->createToken('api-token')->plainTextToken,
-                ]
-            ], 201);
-        } catch (\Exception $e) {
+public function updateRequest(UpdateUserRequest $request, $id)
+{
+    try {
+        // BUSCAR el usuario existente por ID
+        $user = User::find($id);
+        
+        if (!$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al registrar usuario',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Usuario no encontrado',
+                'data' => null
+            ], 404);
         }
+
+        // ACTUALIZAR el usuario (no crear uno nuevo)
+        $user->update([
+            'name' => $request->name ?? $user->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'gender' => $request->gender,
+            'height' => $request->height,
+            'weight' => $request->weight,
+            'streak_days' => $request->streak_days ?? $user->streak_days,
+            'profile_image' => $request->profile_image
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuario actualizado exitosamente',
+            'data' => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'name' => $user->name,
+                'gender' => $user->gender,
+                'height' => $user->height,
+                'weight' => $user->weight,
+                'streak_days' => $user->streak_days,
+                'profile_image' => $user->profile_image,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at
+            ]
+        ], 200);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al actualizar usuario',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
     /**
      * @OA\Delete(
