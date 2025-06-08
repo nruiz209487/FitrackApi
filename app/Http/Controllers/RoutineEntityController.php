@@ -125,7 +125,6 @@ class RoutineEntityController
      */
     public function insertByUserId(int $user_id, InsertRoutineRequest $request): JsonResponse
     {
-        // Buscar si ya existe una rutina con el mismo nombre para el usuario
         $existingRoutine = RoutineEntity::where('userId', $user_id)
             ->where('name', $request->input('name'))
             ->first();

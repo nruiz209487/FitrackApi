@@ -8,23 +8,36 @@ use App\Http\Controllers\RoutineEntityController;
 use App\Http\Controllers\UserEntityController;
 use App\Http\Controllers\TargetLocationEntityController;
 
+// UserEntityController
 Route::post('/user/register', [UserEntityController::class, 'register']);
 Route::get('/user/{email}', [UserEntityController::class, 'getByEmail']);
-Route::put('/user/update/{id}', [UserEntityController::class, 'updateRequest']);
-Route::post('/exercise-log/{user_id}', [ExerciseLogEntityController::class, 'insertByUserId']);
-Route::post('/note/{user_id}', [NoteEntityController::class, 'insertByUserId']);
-Route::post('/routines/{user_id}', [RoutineEntityController::class, 'insertByUserId']);
-Route::delete('/user/delete/{id}', [UserEntityController::class, 'delete']);
-Route::get('/exercises', [ExerciseEntityController::class, 'getAll']);
-Route::get('/target-locations', [TargetLocationEntityController::class, 'getAll']);
-Route::get('/exercise-log/{user_id}', [ExerciseLogEntityController::class, 'getByUserId']);
-Route::delete('/exercise-log/{user_id}/{exercise_Id}', [ExerciseLogEntityController::class, 'deleteByUserId']);
-Route::get('/notes/{user_id}', [NoteEntityController::class, 'getByUserId']);
-Route::delete('/notes/{user_id}/{id}', [NoteEntityController::class, 'deleteByUserId']);
-Route::get('/routines/{user_id}', [RoutineEntityController::class, 'getByUserId']);
-Route::delete('/routines/{user_id}/{routine_id}', [RoutineEntityController::class, 'deleteByUserId']);
-Route::get('/target-locations/{user_id}/{id}', [TargetLocationEntityController::class, 'deleteByUserId']);
-Route::post('/target-locations/{user_id}', [TargetLocationEntityController::class, 'insertByUserId']);
+
 Route::middleware('auth:sanctum')->group(function () {
 
+    // UserEntityController
+    Route::put('/user/update/{id}', [UserEntityController::class, 'updateRequest']);
+    Route::delete('/user/delete/{id}', [UserEntityController::class, 'delete']);
+
+    // ExerciseEntityController
+    Route::get('/exercises', [ExerciseEntityController::class, 'getAll']);
+
+    // ExerciseLogEntityController
+    Route::post('/exercise-log/{user_id}', [ExerciseLogEntityController::class, 'insertByUserId']);
+    Route::get('/exercise-log/{user_id}', [ExerciseLogEntityController::class, 'getByUserId']);
+    Route::delete('/exercise-log/{user_id}/{exercise_Id}', [ExerciseLogEntityController::class, 'deleteByUserId']);
+
+    // NoteEntityController
+    Route::post('/note/{user_id}', [NoteEntityController::class, 'insertByUserId']);
+    Route::get('/notes/{user_id}', [NoteEntityController::class, 'getByUserId']);
+    Route::delete('/notes/{user_id}/{id}', [NoteEntityController::class, 'deleteByUserId']);
+
+    // RoutineEntityController
+    Route::post('/routines/{user_id}', [RoutineEntityController::class, 'insertByUserId']);
+    Route::get('/routines/{user_id}', [RoutineEntityController::class, 'getByUserId']);
+    Route::delete('/routines/{user_id}/{routine_id}', [RoutineEntityController::class, 'deleteByUserId']);
+
+    // TargetLocationEntityController
+    Route::get('/target-locations', [TargetLocationEntityController::class, 'getAll']);
+    Route::delete('/target-locations/{user_id}/{id}', [TargetLocationEntityController::class, 'deleteByUserId']);
+    Route::post('/target-locations/{user_id}', [TargetLocationEntityController::class, 'insertByUserId']);
 });

@@ -89,7 +89,7 @@ class ExerciseLogEntityController
     public function deleteByUserId(int $user_id, int $exercise_Id): JsonResponse
     {
         $exerciseLog = ExerciseLogEntity::where('userId', $user_id)
-            ->where('exerciseId', $exercise_Id)
+            ->where('id', $exercise_Id)
             ->first();
 
         if ($exerciseLog) {
@@ -99,6 +99,7 @@ class ExerciseLogEntityController
             return response()->json(['message' => 'Exercise Log not found'], 404);
         }
     }
+
 
     /**
      * @OA\Post(
@@ -157,33 +158,9 @@ class ExerciseLogEntityController
      *     )
      * )
      */
-    public function insertByUserId(int $user_id, Request $request): JsonResponse
+    public function insertByUserId(int $user_id, InsertExerciseLogRequest $request): JsonResponse
     {
-        try {
-            // Debug: Log datos recibidos
-            Log::info('POST exercise-log recibido:', [
-                'user_id' => $user_id,
-                'body' => $request->all()
-            ]);
-
-            // Validación manual básica (sin exists check)
-            $rules = [
-                'exerciseId' => 'required|integer',
-                'date'        => 'required|date',
-                'weight'      => 'required|numeric|min:0',
-                'reps'        => 'required|integer|min:1',
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'error' => 'Validation failed',
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-
-            // Buscar si ya existe
+        
             $existingLog = ExerciseLogEntity::where('userId', $user_id)
                 ->where('exerciseId', $request->input('exerciseId'))
                 ->where('date', $request->input('date'))
@@ -193,7 +170,6 @@ class ExerciseLogEntityController
                 return response()->json(['message' => 'Exercise Log ya existe para ese usuario'], 200);
             }
 
-            // Crear nuevo log
             $newLog = ExerciseLogEntity::create([
                 'userId'     => $user_id,
                 'exerciseId' => $request->input('exerciseId'),
@@ -206,17 +182,5 @@ class ExerciseLogEntityController
                 'message' => 'Exercise Log insertado exitosamente',
                 'exercise_log' => $newLog
             ], 201);
-        } catch (\Exception $e) {
-            Log::error('Error insertByUserId:', [
-                'error' => $e->getMessage(),
-                'line' => $e->getLine(),
-                'file' => $e->getFile()
-            ]);
-
-            return response()->json([
-                'error' => 'Error interno',
-                'message' => $e->getMessage()
-            ], 500);
-        }
     }
 }

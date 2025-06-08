@@ -138,7 +138,6 @@ class NoteEntityController
      */
     public function insertByUserId(int $user_id, InsertNoteRequest $request): JsonResponse
     {
-        // Buscar si ya existe una nota con los mismos datos
         $existingNote = NoteEntity::where('userId', $user_id)
             ->where('header', $request->input('header'))
             ->where('timestamp', $request->input('timestamp'))

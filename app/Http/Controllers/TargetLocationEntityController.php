@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\InsertTargetLocationRequest;
+use App\Models\User;
 
 class TargetLocationEntityController
 {
@@ -86,28 +88,9 @@ class TargetLocationEntityController
      *     )
      * )
      */
-    public function insertByUserId(int $user_id, Request $request): JsonResponse
+    public function insertByUserId(int $user_id, InsertTargetLocationRequest $request): JsonResponse
     {
-        try {
-            // Reglas de validación
-            $rules = [
-                'name' => 'required|string|max:255',
-                'position' => 'required|string|regex:/^-?\d+\.?\d*,-?\d+\.?\d*$/', // formato: "lat,lng"
-                'radiusMeters' => 'required|numeric|min:0',
-            ];
-
-            // Validar el request
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'error' => 'Validación fallida',
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-
-            // Verificar que el usuario existe (opcional pero recomendado)
-            $userExists = \App\Models\User::where('id', $user_id)->exists();
+            $userExists = User::where('id', $user_id)->exists();
             if (!$userExists) {
                 return response()->json([
                     'error' => 'Usuario no encontrado',
@@ -115,7 +98,6 @@ class TargetLocationEntityController
                 ], 404);
             }
 
-            // Crear la nueva ubicación
             $newLocation = TargetLocationEntity::create([
                 'name' => $request->input('name'),
                 'position' => $request->input('position'),
@@ -123,7 +105,6 @@ class TargetLocationEntityController
                 'userId' => $user_id,
             ]);
 
-            // Transformar position para la respuesta
             [$lat, $lng] = explode(',', $newLocation->position);
             $newLocation->position = [
                 'latitude' => (float) $lat,
@@ -134,27 +115,6 @@ class TargetLocationEntityController
                 'message' => 'Ubicación insertada exitosamente',
                 'location' => $newLocation
             ], 201);
-
-        } catch (\Exception $e) {
-            // Log del error detallado
-            Log::error('Error al insertar ubicación', [
-                'user_id' => $user_id,
-                'input' => $request->all(),
-                'exception_class' => get_class($e),
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
-            // Respuesta clara en JSON
-            return response()->json([
-                'error' => 'Error interno al insertar ubicación',
-                'exception' => get_class($e),
-                'message' => $e->getMessage(),
-                'hint' => 'Revisa storage/logs/laravel.log para más detalles'
-            ], 500);
-        }
     }
 
     /**
@@ -162,7 +122,6 @@ class TargetLocationEntityController
      */
     public function deleteByUserId(int $user_id, int $id): JsonResponse
     {
-        try {
             $location = TargetLocationEntity::where('userId', $user_id)
                                           ->where('id', $id)
                                           ->first();
@@ -179,18 +138,5 @@ class TargetLocationEntityController
             return response()->json([
                 'message' => 'Ubicación eliminada exitosamente'
             ], 200);
-
-        } catch (\Exception $e) {
-            Log::error('Error al eliminar ubicación', [
-                'user_id' => $user_id,
-                'location_id' => $id,
-                'exception' => $e->getMessage()
-            ]);
-
-            return response()->json([
-                'error' => 'Error interno al eliminar ubicación',
-                'message' => $e->getMessage()
-            ], 500);
-        }
     }
 }
