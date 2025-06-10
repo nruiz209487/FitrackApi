@@ -13,6 +13,7 @@ class NoteEntityController
      * @OA\Get(
      *     path="/api/notes/{user_id}",
      *     summary="Obtener notas por ID de usuario",
+     *     description="Devuelve una lista de notas asociadas a un usuario específico.",
      *     tags={"Notes"},
      *     operationId="getNotesByUserId",
      *     security={{"bearerAuth":{}}},
@@ -49,6 +50,7 @@ class NoteEntityController
      * @OA\Delete(
      *     path="/api/notes/{user_id}/{id}",
      *     summary="Eliminar una nota por ID de usuario e ID de nota",
+     *     description="Elimina una nota específica asociada a un usuario.",
      *     tags={"Notes"},
      *     operationId="deleteNoteByUserIdAndId",
      *     security={{"bearerAuth":{}}},
@@ -100,6 +102,7 @@ class NoteEntityController
      * @OA\Post(
      *     path="/api/note/{user_id}",
      *     summary="Insertar una nueva nota por ID de usuario",
+     *     description="Crea una nueva nota asociada a un usuario.",
      *     tags={"Notes"},
      *     operationId="insertNoteByUserId",
      *     security={{"bearerAuth":{}}},

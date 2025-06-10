@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\ExerciseLogEntity;
 use OpenApi\Annotations as OA;
 use App\Http\Requests\InsertExerciseLogRequest;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 class ExerciseLogEntityController
@@ -15,8 +12,9 @@ class ExerciseLogEntityController
     /**
      * @OA\Get(
      *     path="/api/exercise-log/{user_id}",
-     *     operationId="getExerciseLogsByUserId",
      *     summary="Obtener logs de ejercicio por ID de usuario",
+     *     description="Devuelve todos los registros de ejercicio de un usuario específico.",
+     *     operationId="getExerciseLogsByUserId",
      *     tags={"ExerciseLog"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -52,8 +50,9 @@ class ExerciseLogEntityController
     /**
      * @OA\Delete(
      *     path="/api/exercise-log/{user_id}/{exercise_Id}",
-     *     operationId="deleteExerciseLogByUserIdAndExerciseId",
      *     summary="Eliminar un log de ejercicio por ID de usuario e ID de ejercicio",
+     *     description="Elimina un registro de ejercicio específico de un usuario.",
+     *     operationId="deleteExerciseLogByUserIdAndExerciseId",
      *     tags={"ExerciseLog"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -67,7 +66,7 @@ class ExerciseLogEntityController
      *         name="exercise_Id",
      *         in="path",
      *         required=true,
-     *         description="ID del ejercicio",
+     *         description="ID del log de ejercicio",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
@@ -100,12 +99,12 @@ class ExerciseLogEntityController
         }
     }
 
-
     /**
      * @OA\Post(
      *     path="/api/exercise-log/{user_id}",
-     *     operationId="insertExerciseLogByUserId",
      *     summary="Insertar un nuevo log de ejercicio para un usuario",
+     *     description="Inserta un nuevo registro de ejercicio para un usuario si no existe ya con la misma fecha y ejercicio.",
+     *     operationId="insertExerciseLogByUserId",
      *     tags={"ExerciseLog"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -153,7 +152,7 @@ class ExerciseLogEntityController
      *         description="Error interno del servidor",
      *         @OA\JsonContent(
      *             @OA\Property(property="error", type="string", example="Error interno"),
-     *             @OA\Property(property="message", type="string")
+     *             @OA\Property(property="message", type="string", example="Ocurrió un error inesperado")
      *         )
      *     )
      * )

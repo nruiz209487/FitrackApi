@@ -6,10 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('exercise_log_table', function (Blueprint $table) {
-            $table->id(); // auto-incremental PK
+            $table->id(); 
             $table->unsignedBigInteger('exerciseId');
             $table->string('date');
             $table->float('weight');
@@ -18,6 +21,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('exercise_log_table');

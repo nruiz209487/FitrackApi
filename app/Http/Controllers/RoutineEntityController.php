@@ -13,6 +13,7 @@ class RoutineEntityController
      * @OA\Get(
      *     path="/api/routines/{user_id}",
      *     summary="Obtener las rutinas por ID de usuario",
+     *     description="Devuelve una lista de rutinas asociadas a un usuario específico.",
      *     tags={"Routine"},
      *     operationId="getRoutinesByUserId",
      *     security={{"bearerAuth":{}}},
@@ -25,7 +26,8 @@ class RoutineEntityController
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Lista de rutinas del usuario"
+     *         description="Lista de rutinas del usuario",
+     *         @OA\JsonContent(type="array", @OA\Items(type="object"))
      *     )
      * )
      */
@@ -39,6 +41,7 @@ class RoutineEntityController
      * @OA\Delete(
      *     path="/api/routines/{user_id}/{routine_id}",
      *     summary="Eliminar una rutina por ID de usuario e ID de rutina",
+     *     description="Elimina una rutina específica de un usuario dado.",
      *     tags={"Routine"},
      *     operationId="deleteRoutineByUserIdAndRoutineId",
      *     security={{"bearerAuth":{}}},
@@ -58,11 +61,17 @@ class RoutineEntityController
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Rutina eliminada exitosamente"
+     *         description="Rutina eliminada exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Routine eliminada exitosamente")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Rutina no encontrada"
+     *         description="Rutina no encontrada",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Routine no encontrada")
+     *         )
      *     )
      * )
      */
@@ -84,6 +93,7 @@ class RoutineEntityController
      * @OA\Post(
      *     path="/api/routines/{user_id}",
      *     summary="Insertar una nueva rutina para un usuario",
+     *     description="Crea una nueva rutina personalizada asociada a un usuario.",
      *     tags={"Routine"},
      *     operationId="insertRoutineByUserId",
      *     security={{"bearerAuth":{}}},
@@ -102,7 +112,7 @@ class RoutineEntityController
      *             @OA\Property(property="description", type="string", example="Ejercicios centrados en piernas y glúteos"),
      *             @OA\Property(property="imageUri", type="string", example="https://miapp.com/images/pierna.png"),
      *             @OA\Property(
-     *                 property="exerciseIds", 
+     *                 property="exerciseIds",
      *                 type="array",
      *                 @OA\Items(type="integer"),
      *                 example={101, 102, 103}
@@ -119,7 +129,10 @@ class RoutineEntityController
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="La rutina ya existe para ese usuario"
+     *         description="La rutina ya existe para ese usuario",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Routine ya existe para ese usuario")
+     *         )
      *     )
      * )
      */

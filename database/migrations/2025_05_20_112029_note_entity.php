@@ -6,10 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('note_table', function (Blueprint $table) {
-            $table->id(); // auto-incremental
+            $table->id(); 
             $table->string('header');
             $table->text('text');
             $table->foreignId('userId')->constrained('users')->onDelete('cascade');
@@ -18,6 +21,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('note_table');

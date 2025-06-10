@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ExerciseEntity extends Model
 {
@@ -11,8 +12,16 @@ class ExerciseEntity extends Model
     protected $fillable = [
         'name',
         'description',
-        'image_uri',
+        'imageUri',
     ];
 
-    public $timestamps = true; 
+    public $timestamps = true;
+
+    /**
+     * Relación con el modelo User
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'userId');
+    }
 }

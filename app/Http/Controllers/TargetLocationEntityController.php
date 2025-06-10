@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TargetLocationEntity;
 use OpenApi\Annotations as OA;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
 use App\Http\Requests\InsertTargetLocationRequest;
 use App\Models\User;
 
@@ -20,7 +17,7 @@ class TargetLocationEntityController
      *     description="Devuelve una lista de todas las entidades de ubicación objetivo.",
      *     tags={"TargetLocation"},
      *     operationId="getAllTargetLocations",
-     *   security={{"bearerAuth":{}}},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de ubicaciones objetivo",
@@ -30,7 +27,7 @@ class TargetLocationEntityController
      *                 type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Casa"),
-     *                 @OA\Property(property="position", type="object", 
+     *                 @OA\Property(property="position", type="object",
      *                     @OA\Property(property="latitude", type="number", example=19.4326),
      *                     @OA\Property(property="longitude", type="number", example=-99.1332)
      *                 ),
@@ -40,9 +37,9 @@ class TargetLocationEntityController
      *     )
      * )
      */
-    public function getAll()
+    public function getAll($user_id)
     {
-        $list = TargetLocationEntity::all()->map(function ($item) {
+        $list = TargetLocationEntity::where('userId', $user_id)->get()->map(function ($item) {
             [$lat, $lng] = explode(',', $item->position);
             $item->position = [
                 'latitude' => (float) $lat,
@@ -54,6 +51,7 @@ class TargetLocationEntityController
 
         return response()->json($list);
     }
+
 
     /**
      * @OA\Post(
@@ -83,6 +81,10 @@ class TargetLocationEntityController
      *         description="Ubicación creada exitosamente"
      *     ),
      *     @OA\Response(
+     *         response=404,
+     *         description="Usuario no encontrado"
+     *     ),
+     *     @OA\Response(
      *         response=422,
      *         description="Error de validación"
      *     )
@@ -91,6 +93,7 @@ class TargetLocationEntityController
     public function insertByUserId(int $user_id, InsertTargetLocationRequest $request): JsonResponse
     {
             $userExists = User::where('id', $user_id)->exists();
+
             if (!$userExists) {
                 return response()->json([
                     'error' => 'Usuario no encontrado',
@@ -117,8 +120,36 @@ class TargetLocationEntityController
             ], 201);
     }
 
+
     /**
-     * Eliminar ubicación por usuario e ID
+     * @OA\Delete(
+     *     path="/api/target-locations/{user_id}/{id}",
+     *     summary="Eliminar ubicación objetivo de un usuario",
+     *     description="Elimina una ubicación objetivo específica asociada a un usuario dado.",
+     *     tags={"TargetLocation"},
+     *     operationId="deleteTargetLocation",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ubicación eliminada exitosamente"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Ubicación no encontrada"
+     *     )
+     * )
      */
     public function deleteByUserId(int $user_id, int $id): JsonResponse
     {

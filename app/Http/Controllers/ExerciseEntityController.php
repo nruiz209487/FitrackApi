@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\ExerciseEntity;
@@ -10,7 +11,7 @@ class ExerciseEntityController
      * @OA\Get(
      *     path="/api/exercises",
      *     summary="Obtener lista de exercises",
-     *     tags={"exercises"},
+     *     tags={"Exercises"},
      *   security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,

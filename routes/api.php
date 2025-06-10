@@ -8,14 +8,16 @@ use App\Http\Controllers\RoutineEntityController;
 use App\Http\Controllers\UserEntityController;
 use App\Http\Controllers\TargetLocationEntityController;
 
-// UserEntityController
-Route::post('/user/register', [UserEntityController::class, 'register']);
-Route::get('/user/{email}', [UserEntityController::class, 'getByEmail']);
-    Route::put('/user/update/{id}', [UserEntityController::class, 'updateRequest']);
+// User authentication routes
+Route::post('/user/register', [UserEntityController::class, 'register'])->middleware(['throttle:5,1']);;
+Route::post('/user/{email}', [UserEntityController::class, 'getByEmail']);
+
+//sanctum authentication routes
 Route::middleware('auth:sanctum')->group(function () {
 
     // UserEntityController
     Route::delete('/user/delete/{id}', [UserEntityController::class, 'delete']);
+    Route::put('/user/update/{id}', [UserEntityController::class, 'updateRequest']);
 
     // ExerciseEntityController
     Route::get('/exercises', [ExerciseEntityController::class, 'getAll']);
@@ -36,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/routines/{user_id}/{routine_id}', [RoutineEntityController::class, 'deleteByUserId']);
 
     // TargetLocationEntityController
-    Route::get('/target-locations', [TargetLocationEntityController::class, 'getAll']);
+    Route::get('/target-locations/{user_id}', [TargetLocationEntityController::class, 'getAll']);
     Route::delete('/target-locations/{user_id}/{id}', [TargetLocationEntityController::class, 'deleteByUserId']);
     Route::post('/target-locations/{user_id}', [TargetLocationEntityController::class, 'insertByUserId']);
 });

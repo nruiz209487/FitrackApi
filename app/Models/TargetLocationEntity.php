@@ -16,10 +16,8 @@ class TargetLocationEntity extends Model
         'userId',
     ];
 
-    // IMPORTANTE: Cambiar esto a true para usar timestamps
     public $timestamps = true;
 
-    // Cast automático de tipos
     protected $casts = [
         'radiusMeters' => 'float',
         'userId' => 'integer',
