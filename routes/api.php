@@ -11,11 +11,11 @@ use App\Http\Controllers\TargetLocationEntityController;
 
 Route::get('/server-working', function () {
     return response()->json(['message' => 'Server working'], 200);
-});
+})->middleware(['throttle:5,1']);
 
 // User authentication routes
-Route::post('/user/register', [UserEntityController::class, 'register'])->middleware(['throttle:5,1']);;
-Route::post('/user/{email}', [UserEntityController::class, 'getByEmail']);
+Route::post('/user/register', [UserEntityController::class, 'register'])->middleware(['throttle:5,1']);
+Route::post('/user/{email}', [UserEntityController::class, 'getByEmail'])->middleware(['throttle:5,1']);
 
 //sanctum authentication routes
 Route::middleware('auth:sanctum')->group(function () {
