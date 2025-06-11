@@ -9,9 +9,8 @@ use App\Http\Controllers\UserEntityController;
 use App\Http\Controllers\TargetLocationEntityController;
 
 // User authentication routes
-Route::post('/user/register', [UserEntityController::class, 'register'])->middleware(['throttle:5,1']);;
-Route::post('/user/{email}', [UserEntityController::class, 'getByEmail']);
-Route::get('/exercises/test', [ExerciseEntityController::class, 'getAll']);
+Route::post('/user/register', [UserEntityController::class, 'register'])->middleware(['throttle:5,1']);
+Route::post('/user/{email}', [UserEntityController::class, 'getByEmail'])->middleware(['throttle:5,1']);
 //sanctum authentication routes
 Route::middleware('auth:sanctum')->group(function () {
 
