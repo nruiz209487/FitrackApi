@@ -159,27 +159,18 @@ class ExerciseLogEntityController
      */
     public function insertByUserId(int $user_id, InsertExerciseLogRequest $request): JsonResponse
     {
-        
-            $existingLog = ExerciseLogEntity::where('userId', $user_id)
-                ->where('exerciseId', $request->input('exerciseId'))
-                ->where('date', $request->input('date'))
-                ->first();
+        $newLog = ExerciseLogEntity::create([
+            'userId'     => $user_id,
+            'exerciseId' => $request->input('exerciseId'),
+            'date'       => $request->input('date'),
+            'weight'     => $request->input('weight'),
+            'reps'       => $request->input('reps'),
+            'created_at' => now(),
+        ]);
 
-            if ($existingLog) {
-                return response()->json(['message' => 'Exercise Log ya existe para ese usuario'], 200);
-            }
-
-            $newLog = ExerciseLogEntity::create([
-                'userId'     => $user_id,
-                'exerciseId' => $request->input('exerciseId'),
-                'date'       => $request->input('date'),
-                'weight'     => $request->input('weight'),
-                'reps'       => $request->input('reps'),
-            ]);
-
-            return response()->json([
-                'message' => 'Exercise Log insertado exitosamente',
-                'exercise_log' => $newLog
-            ], 201);
-    }
+        return response()->json([
+            'message' => 'Exercise Log insertado exitosamente',
+            'exercise_log' => $newLog
+        ], 201);
+        }
 }
