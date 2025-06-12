@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Modelo para la entidad ExerciseLog
+ */
 class ExerciseLogEntity extends Model
 {
     protected $table = 'exercise_log_table';

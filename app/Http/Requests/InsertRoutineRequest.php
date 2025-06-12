@@ -3,7 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+/**
+ * Class InsertRoutineRequest
+ * @package App\Http\Requests
+ *
+ * La clase InsertRoutineRequest se utiliza para validar las solicitudes de inserción de rutinas.
+ */
 class InsertRoutineRequest extends FormRequest
 {
      /**
@@ -18,7 +23,7 @@ class InsertRoutineRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     * reglas para insertar una rutina
      * @return array
      */
     public function rules()

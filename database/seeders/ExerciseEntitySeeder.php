@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class ExerciseEntitySeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * insertar datos de ejemplo en la tabla de ejercicios
      */
     public function run(): void
     {

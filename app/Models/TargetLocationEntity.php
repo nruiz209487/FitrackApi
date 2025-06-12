@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+/**
+ * Modelo para la entidad TargetLocation
+ */
 class TargetLocationEntity extends Model
 {
     protected $table = 'target_location_table';

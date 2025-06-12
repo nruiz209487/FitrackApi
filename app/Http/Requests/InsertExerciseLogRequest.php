@@ -4,6 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class InsertExerciseLogRequest
+ * @package App\Http\Requests
+ *
+ * La clase InsertExerciseLogRequest se utiliza para validar las solicitudes de inserción de registros de ejercicios.
+ */
 class InsertExerciseLogRequest extends FormRequest
 {
     /**
@@ -18,7 +24,7 @@ class InsertExerciseLogRequest extends FormRequest
     
     /**
      * Get the validation rules that apply to the request.
-     *
+     *reglas para actualizar un usuario
      * @return array
      */
     public function rules()

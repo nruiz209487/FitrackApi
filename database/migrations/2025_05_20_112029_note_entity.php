@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Crea la tabla de notas
+     * Esta tabla almacena las notas de los usuarios, incluyendo el encabezado, el texto, el ID del usuario y la marca de tiempo.
+     * La tabla también incluye una referencia al usuario que creó la nota, lo que permite asociar cada nota con un usuario específico.
+     * Además, la tabla utiliza el método `constrained` para establecer una relación de clave foránea con la tabla de usuarios, asegurando que las notas estén asociadas a usuarios existentes.
      */
     public function up(): void
     {

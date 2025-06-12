@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\ExerciseEntity;
 use OpenApi\Annotations as OA;
-
+/**
+ * Class ExerciseEntityController
+ * @package App\Http\Controllers
+ *
+ * Controlador para la entidad Exercise
+ */
 class ExerciseEntityController
 {
     /**

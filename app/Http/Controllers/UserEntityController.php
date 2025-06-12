@@ -9,6 +9,12 @@ use App\Http\Requests\InsertUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Class UserEntityController
+ * @package App\Http\Controllers
+ *
+ * Controlador para la entidad User
+ */
 class UserEntityController
 {
     /**

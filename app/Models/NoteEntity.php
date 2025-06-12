@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Modelo para la entidad Note
+ */
 class NoteEntity extends Model
 {
     protected $table = 'note_table';

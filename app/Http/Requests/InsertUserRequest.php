@@ -3,7 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+/**
+ * Class InsertUserRequest
+ * @package App\Http\Requests
+ *
+ * La clase InsertUserRequest se utiliza para validar las solicitudes de inserción de usuarios.
+ */
 class InsertUserRequest extends FormRequest
 { 
     /**
@@ -18,7 +23,7 @@ class InsertUserRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     * reglas para insertar un usuario
      * @return array
      */
     public function rules()

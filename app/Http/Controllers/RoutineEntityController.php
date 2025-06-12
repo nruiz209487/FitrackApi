@@ -6,7 +6,12 @@ use App\Models\RoutineEntity;
 use App\Http\Requests\InsertRoutineRequest;
 use OpenApi\Annotations as OA;
 use Illuminate\Http\JsonResponse;
-
+/**
+ * Class RoutineEntityController
+ * @package App\Http\Controllers
+ *
+ * Controlador para la entidad Routine
+ */
 class RoutineEntityController
 {
     /**

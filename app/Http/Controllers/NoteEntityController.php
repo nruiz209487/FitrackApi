@@ -6,7 +6,12 @@ use App\Models\NoteEntity;
 use OpenApi\Annotations as OA;
 use App\Http\Requests\InsertNoteRequest;
 use Illuminate\Http\JsonResponse;
-
+/**
+ * Class NoteEntityController
+ * @package App\Http\Controllers
+ *
+ * Controlador para la entidad Note
+ */
 class NoteEntityController
 {
     /**

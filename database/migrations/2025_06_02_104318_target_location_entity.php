@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Crea la tabla de ubicaciones objetivo
+     * Esta tabla almacena las ubicaciones objetivo para los usuarios, incluyendo el nombre, la posición y el radio en metros.
+     * La tabla también incluye una referencia al usuario que creó la ubicación, lo que permite asociar cada ubicación con un usuario específico.
      */
     public function up(): void
     {

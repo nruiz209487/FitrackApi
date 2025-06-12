@@ -8,6 +8,7 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeders.
+     * llamando a los seeders específicos para poblar la base de datos
      */
     public function run(): void
     {

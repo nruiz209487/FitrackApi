@@ -3,7 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+/**
+ * Class InsertTargetLocationRequest
+ * @package App\Http\Requests
+ * la clase InsertTargetLocationRequest se utiliza para validar las solicitudes de inserción de ubicaciones objetivo.
+ */
 class InsertTargetLocationRequest extends FormRequest
 {
      /**
@@ -19,7 +23,7 @@ class InsertTargetLocationRequest extends FormRequest
     
     /**
      * Get the validation rules that apply to the request.
-     *
+     * reglas para insertar una ubicación objetivo
      * @return array
      */
     public function rules()

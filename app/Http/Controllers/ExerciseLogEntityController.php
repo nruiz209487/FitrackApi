@@ -6,7 +6,12 @@ use App\Models\ExerciseLogEntity;
 use OpenApi\Annotations as OA;
 use App\Http\Requests\InsertExerciseLogRequest;
 use Illuminate\Http\JsonResponse;
-
+/**
+ * Class ExerciseLogEntityController
+ * @package App\Http\Controllers
+ *
+ * Controlador para la entidad ExerciseLog
+ */
 class ExerciseLogEntityController
 {
     /**

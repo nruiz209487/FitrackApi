@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * crea la tabla de usuarios, tokens de restablecimiento de contraseña y sesiones
      */
     public function up(): void
     {

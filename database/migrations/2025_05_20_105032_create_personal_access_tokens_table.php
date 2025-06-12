@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * crea la tabla de tokens de acceso personal
+     * Esta tabla almacena los tokens de acceso personal utilizados para autenticar usuarios en la aplicación.
      */
     public function up(): void
     {

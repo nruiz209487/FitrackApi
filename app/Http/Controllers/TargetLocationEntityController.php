@@ -7,7 +7,12 @@ use OpenApi\Annotations as OA;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\InsertTargetLocationRequest;
 use App\Models\User;
-
+/**
+ * Class TargetLocationEntityController
+ * @package App\Http\Controllers
+ *
+ * Controlador para la entidad TargetLocation
+ */
 class TargetLocationEntityController
 {
     /**

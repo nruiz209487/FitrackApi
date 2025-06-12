@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * crea la tabla de registro de ejercicios
+     * Esta tabla almacena el registro de ejercicios realizados por los usuarios, incluyendo el ID del ejercicio, la fecha, el peso utilizado y las repeticiones.
+     * La tabla también incluye una referencia al usuario que realizó el ejercicio, lo que permite asociar cada registro con un usuario específico.
      */
     public function up(): void
     {

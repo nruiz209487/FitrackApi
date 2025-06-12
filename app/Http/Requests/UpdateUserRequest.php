@@ -3,7 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+/**
+ * Class UpdateUserRequest
+ * @package App\Http\Requests
+ *
+ * La clase UpdateUserRequest se utiliza para validar las solicitudes de actualización de usuarios.
+ */
 class UpdateUserRequest extends FormRequest
 {    
     /**
@@ -18,7 +23,7 @@ class UpdateUserRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     * reglas para actualizar un usuario
      * @return array
      */
     public function rules()

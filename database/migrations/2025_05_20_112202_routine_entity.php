@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Crea la tabla de rutinas
+     * Esta tabla almacena las rutinas de ejercicios, incluyendo su nombre, descripción, imagen y los IDs de los ejercicios asociados.
+     * La tabla también incluye una referencia al usuario que creó la rutina, lo que permite asociar cada rutina con un usuario específico.
      */
     public function up(): void
     {

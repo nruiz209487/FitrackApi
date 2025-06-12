@@ -3,7 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+/**
+ * * Class InsertNoteRequest
+ * @package App\Http\Requests
+ * la clase InsertNoteRequest se utiliza para validar las solicitudes de inserción de notas.
+ */
 class InsertNoteRequest extends FormRequest
 {
      /**
@@ -18,7 +22,7 @@ class InsertNoteRequest extends FormRequest
     
     /**
      * Get the validation rules that apply to the request.
-     *
+     * reglas para insertar una nota
      * @return array
      */
     public function rules()
