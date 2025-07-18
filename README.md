@@ -28,6 +28,6 @@
 
 ## 🔑 Autenticación
 
-La API utiliza **tokens de acceso** (Laravel Sanctum o Passport, según tu implementación). Cada petición al backend debe incluir el header:
+La API utiliza tokens cada petición al backend debe incluir el header:
 
 Authorization: Bearer {token}
